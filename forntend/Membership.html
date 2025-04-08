@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership - Elmvale Horticultural Society</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><img src="assets/images/Picture1.png" alt="Logo" height="40" />
+        Elmvale Hort Society</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="About.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="Membership.html">Membership</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="events.html">Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="news.html">News</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="bursaries.html">Bursaries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="gallery.html">Gallery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="download.html">Downloads</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="members.html">Members</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Membership Page Banner -->
+  <section class="position-relative overflow-hidden" style="max-height: 500px">
+    <img src="assets/images/Annual Meeting-Nov 2024-1.jpg" class="w-100" style="
+          object-fit: cover;
+          object-position: center;
+          height: 100%;
+          max-height: 500px;
+        " alt="Membership" />
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-white"
+      style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6)">
+      <h1 class="fw-bold" style="font-size: 2.8rem">Membership</h1>
+      <p class="lead" style="font-size: 1.1rem">
+        Join us and grow with our gardening community
+      </p>
+    </div>
+  </section>
+
+  <!-- Membership Form -->
+  <section class="py-5 container">
+    <h1>Membership Application Form</h1>
+
+    <div class="card p-4 shadow-sm bg-white">
+      <h3 class="mb-3">E.D.G.E. (Elmvale District Garden Enthusiasts)</h3>
+
+      <form>
+        <div class="mb-3">
+          <label class="form-label" for="fullName">Name (print neatly)</label>
+          <input type="text" id="fullName" class="form-control" placeholder="Full Name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="address">Address</label>
+          <input type="text" id="address" class="form-control" placeholder="Full Address" />
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="postalCode">Postal Code</label>
+            <input type="text" id="postalCode" class="form-control" placeholder="Postal Code" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="phone">Phone #</label>
+            <input type="text" id="phone" class="form-control" placeholder="Phone Number" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="email">E-mail Address (for mailouts of meetings)</label>
+          <input type="email" id="email" class="form-control" placeholder="Email Address" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label me-3" for="membershipType">Membership Type:</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="newMember" name="membershipType" />
+            <label class="form-check-label" for="newMember">New</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="renewingMember" name="membershipType" />
+            <label class="form-check-label" for="renewingMember">Renewing</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="membershipFee"><strong>Membership Fee:</strong> Single $15 per year</label>
+          <input type="hidden" id="membershipFee" value="15" />
+          <p>
+            Cheques are made payable to:
+            <strong>Elmvale and District Horticultural Society</strong>
+          </p>
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="acceptConstitution" />
+          <label class="form-check-label" for="acceptConstitution">I have read the Constitution and Code of
+            Conduct</label>
+        </div>
+
+        <h5>Photo Release Permission and Photo Waiver</h5>
+        <p>
+          Participants involved in any activities offered by E.D.G.E. may be
+          photographed or videotaped during events. The undersigned consents
+          to the use of these photos and/or videos without compensation on
+          E.D.G.E.’s social media and promotional materials.
+        </p>
+
+        <div class="mb-3">
+          <label class="form-label" for="signature">Signature</label>
+          <input type="text" id="signature" class="form-control" placeholder="Sign here" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="printedName">Name Printed Neatly</label>
+          <input type="text" id="printedName" class="form-control" placeholder="Printed Name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="date">Date</label>
+          <input type="date" id="date" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success" disabled>
+          Printable Form Only
+        </button>
+        <small class="text-muted d-block mt-2">Please print this page and bring it to the meeting with the
+          payment.</small>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="footer.js"></script>
+</body>
+
+</html>
