@@ -30,7 +30,10 @@ exports.submit = async (req, res) => {
 
     // Generate PDF
     const doc = new PDFDocument({ margin: 50 });
-    const fileName = `${formData.fullName.replace(/\s/g, "_")}_${Date.now()}.pdf`;
+    const fileName = `${formData.fullName.replace(
+      /\s/g,
+      "_"
+    )}_${Date.now()}.pdf`;
 
     const dirPath = path.join(__dirname, "../../filled-forms");
     if (!fs.existsSync(dirPath)) {
@@ -120,9 +123,38 @@ exports.submit = async (req, res) => {
       console.error("Stream error:", err);
       res.status(500).send("PDF stream failed.");
     });
-
   } catch (error) {
     console.error("PDF generation error:", error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUnregisteredMembers = async (req, res) => {
+  try {
+    const unregisteredMembers = await Membership.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "email",
+          foreignField: "email",
+          as: "userMatch",
+        },
+      },
+      {
+        $match: {
+          userMatch: { $eq: [] },
+        },
+      },
+      {
+        $project: {
+          userMatch: 0,
+        },
+      },
+    ]);
+
+    res.json(unregisteredMembers);
+  } catch (err) {
+    console.error("Error fetching unregistered members:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
