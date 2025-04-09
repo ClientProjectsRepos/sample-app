@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script defer src="navbar.js"></script>
     <style>
         .form-container {
             max-width: 400px;
@@ -39,54 +40,7 @@
 
 <body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/images/Picture1.png" alt="Logo" height="40" />
-                Elmvale Hort Society
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="About.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Membership.html">Membership</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="events.html">Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="news.html">News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="bursaries.html">Bursaries</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="gallery.html">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="download.html">Downloads</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="members.html">Members</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="login.html">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
 
     <div class="form-container  mt-5 mb-5 p-4 shadow-sm bg-white rounded">
@@ -149,11 +103,11 @@
         </div>
     </div>
 
-      <!-- Footer -->
-  <div id="footer-container"></div>
+    <!-- Footer -->
+    <div id="footer-container"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="footer.js"></script>
 
     <script>
         const loginForm = document.getElementById('login-form');
@@ -195,11 +149,12 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("authToken", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
                     messageBoxLogin.classList.remove("text-danger");
                     messageBoxLogin.classList.add("text-success");
                     messageBoxLogin.innerText = "Login successful!";
-                    setTimeout(() => window.location.href = "members.html", 1000);
+                    setTimeout(() => window.location.href = "index.html", 1000);
                 } else {
                     messageBoxLogin.classList.remove("text-success");
                     messageBoxLogin.classList.add("text-danger");

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./db");
 const authRoutes = require("./routes/authRoutes");
+const membershipRoutes = require("./routes/membershipRoutes");
 const createSuperUser = require("./utils/createSuperUser");
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(
 connectDB().then((db) => {
   createSuperUser();
   app.use("/api/auth", authRoutes);
+  app.use("/api/membership", membershipRoutes);
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
