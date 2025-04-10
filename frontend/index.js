@@ -401,7 +401,7 @@ window.onChangePasswordFormSubmit = async function (e) {
   }
 };
 
-window.getUnregisteredMembers = async function fetchMembers() {
+window.getUnregisteredMembers = async function () {
   try {
     const token = localStorage.getItem("authToken") || null;
     const response = await fetch(
@@ -441,6 +441,132 @@ window.getUnregisteredMembers = async function fetchMembers() {
   }
 };
 
+window.getUsersList = async function () {
+  try {
+    const token = localStorage.getItem("authToken") || null;
+    const response = await fetch("http://localhost:3000/api/auth/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) throw new Error("Network response was not ok");
+    const transformedUsers = await response.json();
+    const tableBody = document.getElementById("userTableBody");
+
+    tableBody.innerHTML = "";
+    transformedUsers.forEach((user, index) => {
+      const row = `
+        <tr>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.phone}</td>
+          <td>${user.gender}</td>
+          <td>${user.city}</td>
+          <td>${user.status}</td>
+          <td>${user.roles}</td>
+          <td>${user.registeredOn}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" onclick="window.viewUser('${user.id}')">
+              View
+            </button>
+          </td>
+        </tr>
+      `;
+      tableBody.insertAdjacentHTML("beforeend", row);
+    });
+  } catch (error) {
+    console.error("Error fetching members:", error);
+    document.getElementById("memberTableBody").innerHTML =
+      '<tr><td colspan="9" class="text-danger">Failed to load members</td></tr>';
+  }
+};
+
+window.viewUser = async function (userId) {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/auth/profileById?userId=${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
+
+    if (res.ok) {
+      const userData = await res.json();
+      fetch(`./pages/userregister.html`)
+        .then((res) => res.text())
+        .then((html) => {
+          const mainSection = document.getElementById("main-section");
+          if (mainSection) {
+            mainSection.innerHTML = html;
+            setTimeout(() => {
+              addDataToForm(userData);
+            });
+          }
+        });
+    } else {
+      alert("An error occurred.");
+    }
+  } catch (error) {
+    alert("An error occurred.");
+  }
+};
+
+function addDataToForm(userData) {
+  if (userData) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const isAdmin = user?.role?.includes("admin") || false;
+    document.getElementById("username").value = userData.username || "";
+    document.getElementById("email").value = userData.email || "";
+
+    document.getElementById("firstName").value =
+      userData.personalInfo?.fullName?.first || "";
+    document.getElementById("middleName").value =
+      userData.personalInfo?.fullName?.middle || "";
+    document.getElementById("lastName").value =
+      userData.personalInfo?.fullName?.last || "";
+
+    document.getElementById("dob").value =
+      userData.personalInfo?.dob?.split("T")[0] || "";
+    document.getElementById("gender").value =
+      userData.personalInfo?.gender || "";
+
+    document.getElementById("street").value =
+      userData.personalInfo?.address?.street || "";
+    document.getElementById("city").value =
+      userData.personalInfo?.address?.city || "";
+    document.getElementById("state").value =
+      userData.personalInfo?.address?.state || "";
+    document.getElementById("zip").value =
+      userData.personalInfo?.address?.zip || "";
+    document.getElementById("country").value =
+      userData.personalInfo?.address?.country || "";
+
+    document.getElementById("phoneNumbers").value =
+      (userData.personalInfo?.phoneNumbers || [])[0] || "";
+
+    document.getElementById("emergencyName").value =
+      userData.personalInfo?.emergencyContact?.name || "";
+    document.getElementById("relationship").value =
+      userData.personalInfo?.emergencyContact?.relationship || "";
+    document.getElementById("emergencyPhone").value =
+      userData.personalInfo?.emergencyContact?.phone || "";
+
+    document.getElementById("roleUser").checked =
+      userData.roles.includes("user");
+    document.getElementById("roleAdmin").checked =
+      userData.roles.includes("admin");
+
+    if (!isAdmin) {
+      makeFormReadOnly();
+    }
+  }
+}
 /*===loadUserToForm - Start===*/
 window.loadUserToForm = async function () {
   try {
@@ -454,53 +580,7 @@ window.loadUserToForm = async function () {
 
     if (res.ok) {
       const userData = await res.json();
-
-      const user = JSON.parse(localStorage.getItem("user"));
-      const isAdmin = user?.role?.includes("admin") || false;
-      document.getElementById("username").value = userData.username || "";
-      document.getElementById("email").value = userData.email || "";
-
-      document.getElementById("firstName").value =
-        userData.personalInfo?.fullName?.first || "";
-      document.getElementById("middleName").value =
-        userData.personalInfo?.fullName?.middle || "";
-      document.getElementById("lastName").value =
-        userData.personalInfo?.fullName?.last || "";
-
-      document.getElementById("dob").value =
-        userData.personalInfo?.dob?.split("T")[0] || "";
-      document.getElementById("gender").value =
-        userData.personalInfo?.gender || "";
-
-      document.getElementById("street").value =
-        userData.personalInfo?.address?.street || "";
-      document.getElementById("city").value =
-        userData.personalInfo?.address?.city || "";
-      document.getElementById("state").value =
-        userData.personalInfo?.address?.state || "";
-      document.getElementById("zip").value =
-        userData.personalInfo?.address?.zip || "";
-      document.getElementById("country").value =
-        userData.personalInfo?.address?.country || "";
-
-      document.getElementById("phoneNumbers").value =
-        (userData.personalInfo?.phoneNumbers || [])[0] || "";
-
-      document.getElementById("emergencyName").value =
-        userData.personalInfo?.emergencyContact?.name || "";
-      document.getElementById("relationship").value =
-        userData.personalInfo?.emergencyContact?.relationship || "";
-      document.getElementById("emergencyPhone").value =
-        userData.personalInfo?.emergencyContact?.phone || "";
-
-      document.getElementById("roleUser").checked =
-        userData.roles.includes("user");
-      document.getElementById("roleAdmin").checked =
-        userData.roles.includes("admin");
-
-      if (!isAdmin) {
-        makeFormReadOnly();
-      }
+      addDataToForm(userData);
     } else {
       alert("An error occurred.");
     }

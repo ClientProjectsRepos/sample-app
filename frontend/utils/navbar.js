@@ -13,6 +13,7 @@ const filePaths = {
   userregister: { css: true, js: true },
   changepassword: { css: true, js: false },
   membershiplist: { css: true, js: true, jsfunc: "getUnregisteredMembers" },
+  userslist: { css: true, js: true, jsfunc: "getUsersList" },
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -91,6 +92,11 @@ function generateUserOptions(user) {
         user: "loadUserToForm",
         admin: "loadUserToForm",
       }),
+    },
+    {
+      name: "Users",
+      id: "nav-userslist",
+      type: ["admin"],
     },
     {
       name: "User Registration",
