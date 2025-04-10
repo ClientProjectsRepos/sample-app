@@ -36,3 +36,9 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).send(fileContent);
 };
+
+exports.profile = async (req, res) => {
+  User.findById(req.user.id).select('-password').then(user => {
+    res.json(user);
+  });
+};
