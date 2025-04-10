@@ -78,6 +78,7 @@ window.onVerifyFormSubmit = async function (e) {
   const email = document.getElementById("verifyemail").value;
   const tokenResult = document.getElementById("tokenResult");
   const changepasswordform = document.getElementById("change-password-form");
+  const verifyForm = document.getElementById("verify-form");
   const messageBoxVerify = document.getElementById("messageVerify");
   const formTitle = document.getElementById("form-title");
   const toggleLink = document.querySelector(".toggle-link");
@@ -91,7 +92,6 @@ window.onVerifyFormSubmit = async function (e) {
     const data = await res.json();
     if (res.ok) {
       tokenResult.innerText = `${data.resetToken}`;
-      tokenResult.style.display = "block";
       changepasswordform.style.display = "block";
       verifyForm.style.display = "none";
       formTitle.textContent = "Change Password";
@@ -380,9 +380,15 @@ window.onChangePasswordFormSubmit = async function (e) {
     });
 
     if (res.ok) {
+      const user = JSON.parse(localStorage.getItem("user"));
       messageBoxChangePassword.classList.remove("text-danger");
       messageBoxChangePassword.classList.add("text-success");
       messageBoxChangePassword.innerText = "Password changed successfully!";
+      if (user?.isPasswordFresh) {
+        user.isPasswordFresh = false;
+        localStorage.setItem("user", JSON.stringify(user));
+        setTimeout(() => (window.location.href = "index.html"), 1000);
+      }
     } else {
       const data = await res.json();
       messageBoxChangePassword.classList.add("text-danger");
@@ -402,11 +408,10 @@ window.getUnregisteredMembers = async function fetchMembers() {
       "http://localhost:3000/api/membership/getUnregisteredMembers",
       {
         method: "GET",
-        headers:
-        {
+        headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     if (!response.ok) throw new Error("Network response was not ok");
@@ -514,9 +519,8 @@ function makeFormReadOnly() {
 }
 /*===loadUserToForm - End===*/
 
-
 window.resetUserFrom = function () {
   const form = document.getElementById("registrationForm");
   form.reset();
   form.querySelector("button[type='submit']").style.display = "block";
-}
+};
