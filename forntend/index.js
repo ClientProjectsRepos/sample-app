@@ -448,7 +448,7 @@ window.loadUserToForm = async function () {
       const userData = await res.json();
 
       const user = JSON.parse(localStorage.getItem("user"));
-      const isAdmin = user?.roles?.includes("admin") || false;
+      const isAdmin = user?.role?.includes("admin") || false;
       document.getElementById("username").value = userData.username || "";
       document.getElementById("email").value = userData.email || "";
 
@@ -510,3 +510,10 @@ function makeFormReadOnly() {
   form.querySelector("button[type='submit']").style.display = "none";
 }
 /*===loadUserToForm - End===*/
+
+
+window.resetUserFrom = function () {
+  const form = document.getElementById("registrationForm");
+  form.reset();
+  form.querySelector("button[type='submit']").style.display = "block";
+}

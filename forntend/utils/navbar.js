@@ -84,10 +84,19 @@ window.handleNavbar = function () {
 function generateUserOptions(user) {
   const options = [
     {
-      name: user.role.includes("admin") ? "User Registration" : "Profile",
+      name: "Profile",
       id: "nav-userregister",
       type: ["user", "admin"],
-      method: JSON.stringify({ user: "loadUserToForm" }),
+      method: JSON.stringify({
+        user: "loadUserToForm",
+        admin: "loadUserToForm",
+      }),
+    },
+    {
+      name: "User Registration",
+      id: "nav-userregister",
+      type: ["admin"],
+      method: JSON.stringify({ admin: "resetUserFrom" }),
     },
     {
       name: "Unregistered Members",
@@ -121,7 +130,7 @@ window.NavigationChanged = function (event, fallback = "main") {
   const link = event?.target.closest("a");
   if ((link || fallback) && link?.id !== "userDropdown") {
     const pageName = link?.id.split("-")[1] || fallback;
-    loadPageContent(pageName, navbar, mainSection, privCSS, homeLink);
+    loadPageContent(event, pageName, navbar, mainSection, privCSS, homeLink);
   }
 };
 
@@ -133,7 +142,14 @@ function resetActiveLinks(navbar) {
     });
 }
 
-function loadPageContent(pageName, navbar, mainSection, privCSS, homeLink) {
+function loadPageContent(
+  event,
+  pageName,
+  navbar,
+  mainSection,
+  privCSS,
+  homeLink
+) {
   fetch(`./pages/${pageName}.html`)
     .then((res) => res.text())
     .then((html) => {
@@ -141,7 +157,7 @@ function loadPageContent(pageName, navbar, mainSection, privCSS, homeLink) {
         adjustNavbarForPage(pageName, navbar, homeLink);
         updateCustomCSS(pageName, privCSS);
         mainSection.innerHTML = html;
-        executePageSpecificJS(pageName);
+        executePageSpecificJS(pageName, event);
         resetActiveLinks(navbar);
       }
     });
@@ -175,7 +191,7 @@ function updateCustomCSS(pageName, privCSS) {
   }
 }
 
-function executePageSpecificJS(pageName) {
+function executePageSpecificJS(pageName, event = null) {
   if (filePaths[pageName].js) {
     if (
       filePaths[pageName].jsfunc &&
@@ -183,8 +199,7 @@ function executePageSpecificJS(pageName) {
     ) {
       window[filePaths[pageName].jsfunc]();
     } else {
-      const mthodsInfo = document
-        .getElementById(`nav-${pageName}`)
+      const mthodsInfo = event?.target
         ?.closest("a")
         ?.getAttribute("data-mthodInfo");
       if (mthodsInfo) {
