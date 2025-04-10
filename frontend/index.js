@@ -402,8 +402,11 @@ window.getUnregisteredMembers = async function fetchMembers() {
       "http://localhost:3000/api/membership/getUnregisteredMembers",
       {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
-        Authorization: `Bearer ${token}`,
+        headers:
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     if (!response.ok) throw new Error("Network response was not ok");
