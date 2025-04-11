@@ -604,3 +604,61 @@ window.resetUserFrom = function () {
   form.reset();
   form.querySelector("button[type='submit']").style.display = "block";
 };
+
+window.attachGalleryUploadHandler = function () {
+  const uploadForm = document.getElementById("galleryUploadForm");
+  const messageBox = document.getElementById("uploadMessage");
+
+  if (uploadForm) {
+    console.log("📋 Found #galleryUploadForm — attaching submit handler");
+
+    uploadForm.addEventListener("submit", async (e) => {
+      console.log("📤 Gallery upload form submitted");
+      e.preventDefault();
+      console.log("✅ Default form behavior prevented");
+
+      messageBox.textContent = "";
+
+      const formData = new FormData(uploadForm);
+      const token = localStorage.getItem("authToken");
+
+      console.log("🪪 Token being used:", token);
+      console.log("📦 FormData sent:", formData.get("description"), formData.get("image"));
+
+      try {
+        const res = await fetch("/api/gallery/UploadImage", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        console.log("📥 Response from server:", data);
+
+        if (res.ok) {
+          messageBox.classList.remove("text-danger");
+          messageBox.classList.add("text-success");
+          messageBox.textContent = "Upload successful!";
+          uploadForm.reset();
+        } else {
+          throw new Error(data.message || "Upload failed");
+        }
+      } catch (err) {
+        console.error("❌ Upload error:", err);
+        messageBox.classList.remove("text-success");
+        messageBox.classList.add("text-danger");
+        messageBox.textContent = err.message;
+      }
+    });
+  } else {
+    console.warn("❌ #galleryUploadForm not found in DOM!");
+  }
+};
+
+
+
+
+
+

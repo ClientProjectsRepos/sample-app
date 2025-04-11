@@ -1,0 +1,22 @@
+<!-- pages/galleryupload.html -->
+<div id="galleryupload-page" class="container py-5">
+    <h2 class="text-center mb-4">Upload New Gallery Image</h2>
+    <div class="card p-4 shadow-sm bg-white col-md-8 mx-auto">
+      <form id="galleryUploadForm" enctype="multipart/form-data" novalidate>
+        <div class="mb-3">
+          <label for="image" class="form-label">Select Image</label>
+          <input class="form-control" type="file" id="image" name="image" accept="image/*" required />
+        </div>
+  
+        <div class="mb-3">
+          <label for="description" class="form-label">Image Description</label>
+          <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+  
+        <div id="uploadMessage" class="text-danger mb-3"></div>
+  
+        <button type="submit" class="btn btn-success w-100">Upload</button>
+      </form>
+    </div>
+  </div>
+  

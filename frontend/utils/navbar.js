@@ -14,6 +14,7 @@ const filePaths = {
   changepassword: { css: true, js: false },
   membershiplist: { css: true, js: true, jsfunc: "getUnregisteredMembers" },
   userslist: { css: true, js: true, jsfunc: "getUsersList" },
+  galleryupload: { css: false, js: true, jsfunc: "attachGalleryUploadHandler" },
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -108,6 +109,11 @@ function generateUserOptions(user) {
       name: "Unregistered Members",
       id: "nav-membershiplist",
       type: ["admin"],
+    },
+    {
+      name: "Upload to Gallery",
+      id: "nav-galleryupload",
+      type: ["admin"]
     },
   ];
   let menuList = "";
